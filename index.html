@@ -243,13 +243,6 @@
     padding-bottom:18px;
     border-bottom:1px dashed var(--rule);
   }
-  .sec-num{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:0.2em;
-    color:var(--accent);
-    text-transform:uppercase;
-  }
   .sec-title{
     font-family:'IBM Plex Sans',sans-serif;
     font-weight:600;
@@ -359,39 +352,17 @@
     text-transform:uppercase;
   }
   .pub-item{
-    display:grid;
-    grid-template-columns:140px 1fr;
-    gap:28px;
     padding:18px 0;
     border-bottom:1px dotted var(--rule);
-    align-items:start;
   }
   .pub-item:last-child{border-bottom:none}
-  /* venue-tag styling */
-  .pub-venue-tag{
-    background:var(--paper-shade);
-    border:1px solid var(--rule);
-    padding:10px 12px;
-    text-align:center;
+  .pub-venue{
     font-family:'IBM Plex Mono',monospace;
     font-size:10.5px;
-    color:var(--ink);
+    color:var(--ink-faint);
     letter-spacing:0.04em;
     line-height:1.3;
-  }
-  .pub-venue-tag.flagship{
-    background:var(--accent);
-    color:var(--paper);
-    border-color:var(--accent);
-    font-weight:500;
-  }
-  .pub-venue-tag.special{
-    background:var(--ink);
-    color:var(--paper);
-    border-color:var(--ink);
-  }
-  .pub-venue-tag .vyr{
-    display:block;font-size:9px;opacity:0.7;margin-top:3px;
+    margin-bottom:6px;
   }
   .pub-content .ptitle{
     font-family:'IBM Plex Sans',sans-serif;
@@ -496,68 +467,6 @@
   }
   footer .foot-name{color:var(--ink);font-weight:500}
 
-  /* === Quick Section Nav (right side) === */
-  .quick-nav{
-    position:fixed;
-    top:50%;right:24px;
-    transform:translateY(-50%);
-    z-index:40;
-    display:flex;flex-direction:column;
-    gap:2px;
-    padding:10px 0;
-  }
-  .quick-nav a{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:10px;
-    text-decoration:none;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10.5px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--ink-faint);
-    padding:5px 0;
-    transition:color .25s, gap .25s;
-    position:relative;
-  }
-  .quick-nav .qn-label{
-    opacity:0;
-    transform:translateX(8px);
-    transition:opacity .25s, transform .25s, color .25s;
-    pointer-events:none;
-  }
-  .quick-nav a:hover .qn-label,
-  .quick-nav a.active .qn-label{
-    opacity:1;
-    transform:translateX(0);
-  }
-  .quick-nav .qn-tick{
-    display:inline-block;
-    width:18px;
-    height:1px;
-    background:var(--ink-faint);
-    transition:width .25s, background .25s, height .25s;
-    flex-shrink:0;
-  }
-  .quick-nav a:hover{color:var(--ink)}
-  .quick-nav a:hover .qn-tick{
-    width:30px;
-    background:var(--ink);
-  }
-  .quick-nav a.active{
-    color:var(--accent);
-  }
-  .quick-nav a.active .qn-tick{
-    width:36px;
-    height:2px;
-    background:var(--accent);
-  }
-  /* hide on mobile — topbar handles navigation */
-  @media (max-width:1280px){
-    .quick-nav{display:none}
-  }
-
   /* responsive */
   @media (max-width:980px){
     .stage{padding:0 24px}
@@ -572,12 +481,10 @@
     section{padding:56px 0}
     .research-grid{grid-template-columns:1fr}
     .media-grid{grid-template-columns:1fr}
-    .pub-item{grid-template-columns:1fr;gap:12px}
-    .pub-venue-tag{width:fit-content;padding:6px 12px}
     .eyebrow{flex-wrap:wrap;line-height:1.6;letter-spacing:0.16em}
     .sec-head{align-items:flex-start}
     .sec-title{min-width:0}
-    .sec-aside{flex-basis:100%;padding-left:43px}
+    .sec-aside{flex-basis:100%}
     .feature-banner{grid-template-columns:1fr;gap:16px;padding:24px 28px}
     .fb-stamp{font-size:42px}
     .fb-arrow{display:none}
@@ -613,14 +520,6 @@
   </nav>
 </div>
 
-<!-- Quick section nav (right side, desktop only) -->
-<nav class="quick-nav" aria-label="Quick section navigation">
-  <a href="#about" data-target="about"><span class="qn-label">About</span><span class="qn-tick"></span></a>
-  <a href="#publications" data-target="publications"><span class="qn-label">Publications</span><span class="qn-tick"></span></a>
-  <a href="#research" data-target="research"><span class="qn-label">Research</span><span class="qn-tick"></span></a>
-  <a href="#media" data-target="media"><span class="qn-label">Media</span><span class="qn-tick"></span></a>
-</nav>
-
 <!-- Hero -->
 <section class="hero" id="about" style="border-bottom:1px solid var(--rule)">
   <div class="portrait-wrap anim d1">
@@ -648,14 +547,13 @@
 <!-- Publications -->
 <section id="publications">
   <div class="sec-head">
-    <div class="sec-num">§ 01</div>
     <h2 class="sec-title">Selected <em>Publications</em></h2>
     <div class="sec-aside">15 representative articles</div>
   </div>
 
   <div class="pub-year-group">
     <div class="pub-year">2026</div>
-    <div class="pub-item"><div class="pub-venue-tag">Nucleic Acids Research<span class="vyr">2026</span></div>
+    <div class="pub-item"><div class="pub-venue">Nucleic Acids Research</div>
       <div class="pub-content">
         <span class="ptitle">Computational evolution of poly(U) polymerase for efficient and controlled RNA oligonucleotide synthesis</span>
         <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
@@ -665,49 +563,49 @@
 
   <div class="pub-year-group">
     <div class="pub-year">2025</div>
-    <div class="pub-item"><div class="pub-venue-tag flagship">Nature Biomedical Engineering<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">Nature Biomedical Engineering</div>
       <div class="pub-content">
         <span class="ptitle">Accelerating primer design for amplicon sequencing using large language model powered agents</span>
         <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">Laboratory Investigation<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">Laboratory Investigation</div>
       <div class="pub-content">
         <span class="ptitle">Artificial Intelligence-powered Spatial Analysis of the Tumor Microenvironment in Pulmonary Lymphoepithelial Carcinoma</span>
         <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag flagship">Nature Machine Intelligence<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">Nature Machine Intelligence</div>
       <div class="pub-content">
         <span class="ptitle">Contrastive learning enables rapid mapping to multimodal single-cell atlas of multimillion scale</span>
         <div class="pmeta-row">AI &amp; ML · 第一作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">GigaScience<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">GigaScience</div>
       <div class="pub-content">
         <span class="ptitle">Cross-modal contrastive learning decodes developmental regulatory features through chromatin potential analysis</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">ACS Catalysis<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">ACS Catalysis</div>
       <div class="pub-content">
         <span class="ptitle">Computational design of a thermostable and highly active terminal deoxynucleotidyl transferase for synthesis of long de novo DNA molecules</span>
         <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">Human Genetics<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">Human Genetics</div>
       <div class="pub-content">
         <span class="ptitle">BRCA-CN: a blockchain-based framework to support public variant databases sharing in multi-center community for diagnostic reference</span>
         <div class="pmeta-row">Blockchain · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag special">bioRxiv<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">bioRxiv</div>
       <div class="pub-content">
         <span class="ptitle">Structural Mechanism of Specific Nucleobase Recognition by a Monoclonal Antibody in CoolMPS Sequencing</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag special">bioRxiv<span class="vyr">2025</span></div>
+    <div class="pub-item"><div class="pub-venue">bioRxiv</div>
       <div class="pub-content">
         <span class="ptitle">Closing the Sim-to-Real Gap: An End-to-End Robotic Ultrasound System Leveraging In Vivo Reinforcement Learning and 3D-Prior Guide</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
@@ -719,7 +617,7 @@
   <div class="pub-extra" id="pubExtra">
   <div class="pub-year-group">
     <div class="pub-year">2024</div>
-    <div class="pub-item"><div class="pub-venue-tag">iScience<span class="vyr">2024</span></div>
+    <div class="pub-item"><div class="pub-venue">iScience</div>
       <div class="pub-content">
         <span class="ptitle">RNA velocity prediction via neural ordinary differential equation</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
@@ -729,13 +627,13 @@
 
   <div class="pub-year-group">
     <div class="pub-year">2023</div>
-    <div class="pub-item"><div class="pub-venue-tag flagship">Nature Machine Intelligence<span class="vyr">2023</span></div>
+    <div class="pub-item"><div class="pub-venue">Nature Machine Intelligence</div>
       <div class="pub-content">
         <span class="ptitle">Self-play reinforcement learning guides protein engineering</span>
         <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">Patterns<span class="vyr">2023</span></div>
+    <div class="pub-item"><div class="pub-venue">Patterns</div>
       <div class="pub-content">
         <span class="ptitle">Self-supervised graph representation learning integrates multiple molecular networks and decodes gene-disease relationships</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
@@ -745,13 +643,13 @@
 
   <div class="pub-year-group">
     <div class="pub-year">2022</div>
-    <div class="pub-item"><div class="pub-venue-tag">Cell Systems<span class="vyr">2022</span></div>
+    <div class="pub-item"><div class="pub-venue">Cell Systems</div>
       <div class="pub-content">
         <span class="ptitle">TrustGWAS: A full-process workflow for encrypted GWAS using multi-key homomorphic encryption and pseudorandom number perturbation</span>
         <div class="pmeta-row">Blockchain · 第一作者</div>
       </div>
     </div>
-    <div class="pub-item"><div class="pub-venue-tag">Nucleic Acids Research<span class="vyr">2022</span></div>
+    <div class="pub-item"><div class="pub-venue">Nucleic Acids Research</div>
       <div class="pub-content">
         <span class="ptitle">Integrating convolution and self-attention improves language model of human genome for interpreting non-coded regions at base-resolution</span>
         <div class="pmeta-row">Genomics · 通讯作者</div>
@@ -761,7 +659,7 @@
 
   <div class="pub-year-group">
     <div class="pub-year">2021</div>
-    <div class="pub-item"><div class="pub-venue-tag">International Journal of Medical Informatics<span class="vyr">2021</span></div>
+    <div class="pub-item"><div class="pub-venue">International Journal of Medical Informatics</div>
       <div class="pub-content">
         <span class="ptitle">Benchmarking blockchain-based gene-drug interaction data sharing methods: A case study from the iDASH 2019 secure genome analysis competition</span>
         <div class="pmeta-row">Blockchain · 共同第一作者</div>
@@ -774,7 +672,6 @@
 <!-- Research Directions -->
 <section id="research">
   <div class="sec-head">
-    <div class="sec-num">§ 02</div>
     <h2 class="sec-title">Research <em>Directions</em></h2>
   </div>
   <div class="research-grid">
@@ -816,7 +713,6 @@
 <!-- Media Coverage -->
 <section id="media">
   <div class="sec-head">
-    <div class="sec-num">§ 03</div>
     <h2 class="sec-title">Media <em>Coverage</em></h2>
     <div class="sec-aside">WeChat articles</div>
   </div>
@@ -906,35 +802,6 @@
   }, {threshold:0.06});
   document.querySelectorAll('section, .feature-banner').forEach(s => obs.observe(s));
 
-  // Quick-nav active section tracking
-  const qnLinks = document.querySelectorAll('.quick-nav a');
-  const sectionIds = Array.from(qnLinks).map(a => a.dataset.target);
-  const sections = sectionIds
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
-
-  function setActive(id){
-    qnLinks.forEach(a => {
-      a.classList.toggle('active', a.dataset.target === id);
-    });
-  }
-
-  const qnObs = new IntersectionObserver((entries) => {
-    // pick the entry closest to the top that is intersecting
-    const visible = entries
-      .filter(e => e.isIntersecting)
-      .sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
-    if(visible.length){
-      setActive(visible[0].target.id);
-    }
-  }, {
-    rootMargin: '-20% 0px -60% 0px',
-    threshold: 0
-  });
-  sections.forEach(s => qnObs.observe(s));
-
-  // Initialize: highlight first section on load
-  if(sections.length) setActive(sections[0].id);
 </script>
 </body>
 </html>
