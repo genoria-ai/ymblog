@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" data-language="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meng Yang · 杨梦</title>
+<title>杨梦</title>
+<script>
+  (() => {
+    let language = null;
+    try {
+      language = localStorage.getItem('ymblog-language');
+    } catch {}
+    if(language !== 'en' && language !== 'zh'){
+      language = navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+    }
+    document.documentElement.dataset.language = language;
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+    document.title = language === 'zh' ? '杨梦' : 'Meng Yang';
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,6 +36,9 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;scroll-padding-top:64px}
+  [data-lang-content]{display:none}
+  html[data-language="en"] [data-lang-content="en"],
+  html[data-language="zh"] [data-lang-content="zh"]{display:revert}
   body{
     background:var(--paper);
     color:var(--ink);
@@ -56,6 +73,31 @@
   .topbar nav{display:flex;gap:28px;align-items:center}
   .topbar nav a{color:var(--ink-soft);text-decoration:none;transition:color .2s;position:relative}
   .topbar nav a:hover{color:var(--accent)}
+  .lang-switch{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-left:2px;
+    padding-left:20px;
+    border-left:1px solid var(--rule);
+    color:var(--ink-faint);
+  }
+  .lang-switch button{
+    appearance:none;
+    border:0;
+    background:transparent;
+    color:var(--ink-faint);
+    font:inherit;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:none;
+    cursor:pointer;
+    padding:3px 0;
+    transition:color .2s;
+  }
+  .lang-switch button:hover,
+  .lang-switch button[aria-pressed="true"]{color:var(--ink)}
+  .lang-switch button[aria-pressed="true"]{border-bottom:1px solid var(--ink)}
   .topbar nav a.cv{
     color:var(--paper);background:var(--ink);
     padding:6px 14px;letter-spacing:0.1em;
@@ -478,6 +520,7 @@
     .topbar{padding:12px 24px;margin:0 -24px}
     .topbar nav{gap:14px}
     .topbar nav a:not(.cv){display:none}
+    .lang-switch{margin-left:0;padding-left:12px}
     section{padding:56px 0}
     .research-grid{grid-template-columns:1fr}
     .media-grid{grid-template-columns:1fr}
@@ -511,12 +554,17 @@
 
 <!-- top nav -->
 <div class="topbar">
-  <div class="mark">Meng Yang <em>· 杨梦</em></div>
+  <div class="mark"><span data-lang-content="en">Meng Yang</span><span data-lang-content="zh">杨梦</span></div>
   <nav>
-    <a href="#about">About</a>
-    <a href="#publications">Publications</a>
-    <a href="#research">Research</a>
-    <a href="#media">Media</a>
+    <a href="#about"><span data-lang-content="en">About</span><span data-lang-content="zh">关于</span></a>
+    <a href="#publications"><span data-lang-content="en">Publications</span><span data-lang-content="zh">论文</span></a>
+    <a href="#research"><span data-lang-content="en">Research</span><span data-lang-content="zh">研究方向</span></a>
+    <a href="#media"><span data-lang-content="en">Media</span><span data-lang-content="zh">媒体报道</span></a>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-set-language="en" aria-pressed="false">EN</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-set-language="zh" aria-pressed="true">中文</button>
+    </div>
   </nav>
 </div>
 
@@ -530,16 +578,19 @@
   </div>
 
   <div class="hero-info">
-    <h1 class="name anim d2">Meng Yang<span class="zh">杨梦</span></h1>
+    <h1 class="name anim d2"><span data-lang-content="en">Meng Yang</span><span data-lang-content="zh">杨梦</span></h1>
 
     <div class="role-line anim d3">
-      <strong>涌生智能 CEO、华大智造首席AI官</strong>
+      <strong data-lang-content="en">CEO, Genoria AI · Chief AI Officer, MGI Tech</strong>
+      <strong data-lang-content="zh">涌生智能 CEO、华大智造首席AI官</strong>
     </div>
 
     <div class="bio anim d4">
-      <p>杨梦博士现任涌生智能 CEO、华大智造首席AI官，同时担任华大涌生智能科技有限公司总经理与华大生物智能学院院长。毕业于天津大学、麻省理工学院（硕士）与哥本哈根大学（博士），专注于生物信息学与人工智能的交叉研究。</p>
+      <p data-lang-content="en">Dr. Meng Yang is CEO of Genoria AI and Chief AI Officer of MGI Tech. She also serves as General Manager of BGI Genoria Intelligent Technology Co., Ltd. and Dean of the BGI Institute of Bio-Intelligence. She studied at Tianjin University, earned a master’s degree from the Massachusetts Institute of Technology, and received her PhD from the University of Copenhagen. Her work focuses on the intersection of bioinformatics and artificial intelligence.</p>
+      <p data-lang-content="zh">杨梦博士现任涌生智能 CEO、华大智造首席AI官，同时担任华大涌生智能科技有限公司总经理与华大生物智能学院院长。毕业于天津大学、麻省理工学院（硕士）与哥本哈根大学（博士），专注于生物信息学与人工智能的交叉研究。</p>
 
-      <p>过去十余年，主导研发了从基因测序仪到 AI 智慧实验室平台的一系列前沿产品，在 Nature Biomedical Engineering、Nature Machine Intelligence、Cell Systems 等顶级期刊发表论文 18 篇，主导制定 IEEE 国际标准、国家标准及行业标准，持有40+ 发明专利。</p>
+      <p data-lang-content="en">Over the past decade, she has led the development of products ranging from genetic sequencers to AI-powered laboratory platforms. She has published 18 papers in leading journals including Nature Biomedical Engineering, Nature Machine Intelligence, and Cell Systems; led the development of IEEE international, national, and industry standards; and holds more than 40 invention patents.</p>
+      <p data-lang-content="zh">过去十余年，主导研发了从基因测序仪到 AI 智慧实验室平台的一系列前沿产品，在 Nature Biomedical Engineering、Nature Machine Intelligence、Cell Systems 等顶级期刊发表论文 18 篇，主导制定 IEEE 国际标准、国家标准及行业标准，持有40+ 发明专利。</p>
     </div>
   </div>
 </section>
@@ -547,8 +598,8 @@
 <!-- Publications -->
 <section id="publications">
   <div class="sec-head">
-    <h2 class="sec-title">Selected <em>Publications</em></h2>
-    <div class="sec-aside">15 representative articles</div>
+    <h2 class="sec-title"><span data-lang-content="en">Selected Publications</span><span data-lang-content="zh">代表性论文</span></h2>
+    <div class="sec-aside"><span data-lang-content="en">15 representative articles</span><span data-lang-content="zh">15 篇代表性论文</span></div>
   </div>
 
   <div class="pub-year-group">
@@ -556,7 +607,7 @@
     <div class="pub-item"><div class="pub-venue">Nucleic Acids Research</div>
       <div class="pub-content">
         <span class="ptitle">Computational evolution of poly(U) polymerase for efficient and controlled RNA oligonucleotide synthesis</span>
-        <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · Corresponding author</span><span data-lang-content="zh">AI 与机器学习 · 通讯作者</span></div>
       </div>
     </div>
   </div>
@@ -566,61 +617,61 @@
     <div class="pub-item"><div class="pub-venue">Nature Biomedical Engineering</div>
       <div class="pub-content">
         <span class="ptitle">Accelerating primer design for amplicon sequencing using large language model powered agents</span>
-        <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · Corresponding author</span><span data-lang-content="zh">AI 与机器学习 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">Laboratory Investigation</div>
       <div class="pub-content">
         <span class="ptitle">Artificial Intelligence-powered Spatial Analysis of the Tumor Microenvironment in Pulmonary Lymphoepithelial Carcinoma</span>
-        <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · Corresponding author</span><span data-lang-content="zh">AI 与机器学习 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">Nature Machine Intelligence</div>
       <div class="pub-content">
         <span class="ptitle">Contrastive learning enables rapid mapping to multimodal single-cell atlas of multimillion scale</span>
-        <div class="pmeta-row">AI &amp; ML · 第一作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · First author</span><span data-lang-content="zh">AI 与机器学习 · 第一作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">GigaScience</div>
       <div class="pub-content">
         <span class="ptitle">Cross-modal contrastive learning decodes developmental regulatory features through chromatin potential analysis</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">ACS Catalysis</div>
       <div class="pub-content">
         <span class="ptitle">Computational design of a thermostable and highly active terminal deoxynucleotidyl transferase for synthesis of long de novo DNA molecules</span>
-        <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · Corresponding author</span><span data-lang-content="zh">AI 与机器学习 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">Human Genetics</div>
       <div class="pub-content">
         <span class="ptitle">BRCA-CN: a blockchain-based framework to support public variant databases sharing in multi-center community for diagnostic reference</span>
-        <div class="pmeta-row">Blockchain · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Blockchain · Corresponding author</span><span data-lang-content="zh">区块链 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">bioRxiv</div>
       <div class="pub-content">
         <span class="ptitle">Structural Mechanism of Specific Nucleobase Recognition by a Monoclonal Antibody in CoolMPS Sequencing</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">bioRxiv</div>
       <div class="pub-content">
         <span class="ptitle">Closing the Sim-to-Real Gap: An End-to-End Robotic Ultrasound System Leveraging In Vivo Reinforcement Learning and 3D-Prior Guide</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
   </div>
 
-  <button class="pub-toggle" id="pubToggle" type="button" aria-controls="pubExtra" aria-expanded="false">Other Publications</button>
+  <button class="pub-toggle" id="pubToggle" type="button" aria-controls="pubExtra" aria-expanded="false" data-label-en-closed="Other Publications" data-label-en-open="Hide Other Publications" data-label-zh-closed="其他论文" data-label-zh-open="收起其他论文">其他论文</button>
   <div class="pub-extra" id="pubExtra">
   <div class="pub-year-group">
     <div class="pub-year">2024</div>
     <div class="pub-item"><div class="pub-venue">iScience</div>
       <div class="pub-content">
         <span class="ptitle">RNA velocity prediction via neural ordinary differential equation</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
   </div>
@@ -630,13 +681,13 @@
     <div class="pub-item"><div class="pub-venue">Nature Machine Intelligence</div>
       <div class="pub-content">
         <span class="ptitle">Self-play reinforcement learning guides protein engineering</span>
-        <div class="pmeta-row">AI &amp; ML · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">AI &amp; ML · Corresponding author</span><span data-lang-content="zh">AI 与机器学习 · 通讯作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">Patterns</div>
       <div class="pub-content">
         <span class="ptitle">Self-supervised graph representation learning integrates multiple molecular networks and decodes gene-disease relationships</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
   </div>
@@ -646,13 +697,13 @@
     <div class="pub-item"><div class="pub-venue">Cell Systems</div>
       <div class="pub-content">
         <span class="ptitle">TrustGWAS: A full-process workflow for encrypted GWAS using multi-key homomorphic encryption and pseudorandom number perturbation</span>
-        <div class="pmeta-row">Blockchain · 第一作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Blockchain · First author</span><span data-lang-content="zh">区块链 · 第一作者</span></div>
       </div>
     </div>
     <div class="pub-item"><div class="pub-venue">Nucleic Acids Research</div>
       <div class="pub-content">
         <span class="ptitle">Integrating convolution and self-attention improves language model of human genome for interpreting non-coded regions at base-resolution</span>
-        <div class="pmeta-row">Genomics · 通讯作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Genomics · Corresponding author</span><span data-lang-content="zh">基因组学 · 通讯作者</span></div>
       </div>
     </div>
   </div>
@@ -662,7 +713,7 @@
     <div class="pub-item"><div class="pub-venue">International Journal of Medical Informatics</div>
       <div class="pub-content">
         <span class="ptitle">Benchmarking blockchain-based gene-drug interaction data sharing methods: A case study from the iDASH 2019 secure genome analysis competition</span>
-        <div class="pmeta-row">Blockchain · 共同第一作者</div>
+        <div class="pmeta-row"><span data-lang-content="en">Blockchain · Co-first author</span><span data-lang-content="zh">区块链 · 共同第一作者</span></div>
       </div>
     </div>
   </div>
@@ -672,39 +723,39 @@
 <!-- Research Directions -->
 <section id="research">
   <div class="sec-head">
-    <h2 class="sec-title">Research <em>Directions</em></h2>
+    <h2 class="sec-title"><span data-lang-content="en">Research Directions</span><span data-lang-content="zh">研究方向</span></h2>
   </div>
   <div class="research-grid">
     <div class="research-card">
       <div class="rc-num">01</div>
-      <div class="rc-title"><em>Self-Evolving</em> Lab</div>
+      <div class="rc-title"><span data-lang-content="en">Self-Evolving Lab</span><span data-lang-content="zh">自进化实验室</span></div>
       <div class="rc-body">
-        <p>Building agentic laboratory systems that connect experimental design, automated execution, data analysis, and iterative learning. The goal is to move laboratories beyond automation toward systems that can continuously improve through real experimental feedback.</p>
-        <p lang="zh-CN">自进化实验室：构建连接实验设计、自动执行、数据分析和迭代学习的智能实验室系统，推动实验室从“自动化工具”走向能够基于真实实验反馈持续改进的系统。</p>
+        <p data-lang-content="en">Building agentic laboratory systems that connect experimental design, automated execution, data analysis, and iterative learning. The goal is to move laboratories beyond automation toward systems that can continuously improve through real experimental feedback.</p>
+        <p data-lang-content="zh">自进化实验室：构建连接实验设计、自动执行、数据分析和迭代学习的智能实验室系统，推动实验室从“自动化工具”走向能够基于真实实验反馈持续改进的系统。</p>
       </div>
     </div>
     <div class="research-card">
       <div class="rc-num">02</div>
-      <div class="rc-title">AI <em>Biomolecular</em> Design</div>
+      <div class="rc-title"><span data-lang-content="en">AI Biomolecular Design</span><span data-lang-content="zh">AI 生物分子设计</span></div>
       <div class="rc-body">
-        <p>Developing AI methods for protein and enzyme engineering, from self-play reinforcement learning to the computational design of thermostable and highly active enzymes. The work links sequence, structure, function, and experimental validation to accelerate biomolecular discovery.</p>
-        <p lang="zh-CN">AI 生物分子设计：利用自博弈强化学习和计算设计等方法开展蛋白质与酶工程研究，连接序列、结构、功能和实验验证，加速生物分子的发现与优化。</p>
+        <p data-lang-content="en">Developing AI methods for protein and enzyme engineering, from self-play reinforcement learning to the computational design of thermostable and highly active enzymes. The work links sequence, structure, function, and experimental validation to accelerate biomolecular discovery.</p>
+        <p data-lang-content="zh">AI 生物分子设计：利用自博弈强化学习和计算设计等方法开展蛋白质与酶工程研究，连接序列、结构、功能和实验验证，加速生物分子的发现与优化。</p>
       </div>
     </div>
     <div class="research-card">
       <div class="rc-num">03</div>
-      <div class="rc-title">AI for <em>Multi-Omics</em></div>
+      <div class="rc-title"><span data-lang-content="en">AI for Multi-Omics</span><span data-lang-content="zh">AI 多组学研究</span></div>
       <div class="rc-body">
-        <p>Using language models, contrastive learning, neural ordinary differential equations, and graph learning to interpret genomic, single-cell, chromatin, and other multimodal omics data. The aim is to uncover regulatory programs, cellular states, and disease-relevant relationships at scale.</p>
-        <p lang="zh-CN">AI 多组学研究：利用语言模型、对比学习、神经常微分方程和图学习等方法，解析基因组、单细胞、染色质及其他多模态组学数据，揭示调控程序、细胞状态和疾病相关关系。</p>
+        <p data-lang-content="en">Using language models, contrastive learning, neural ordinary differential equations, and graph learning to interpret genomic, single-cell, chromatin, and other multimodal omics data. The aim is to uncover regulatory programs, cellular states, and disease-relevant relationships at scale.</p>
+        <p data-lang-content="zh">AI 多组学研究：利用语言模型、对比学习、神经常微分方程和图学习等方法，解析基因组、单细胞、染色质及其他多模态组学数据，揭示调控程序、细胞状态和疾病相关关系。</p>
       </div>
     </div>
     <div class="research-card">
       <div class="rc-num">04</div>
-      <div class="rc-title"><em>Privacy-Preserving</em> Computation</div>
+      <div class="rc-title"><span data-lang-content="en">Privacy-Preserving Computation</span><span data-lang-content="zh">隐私计算</span></div>
       <div class="rc-body">
-        <p>Building secure computational frameworks for genomic analysis and biomedical data sharing using homomorphic encryption, perturbation, and blockchain. The work enables collaborative analysis and data sharing without exposing raw genomic information.</p>
-        <p lang="zh-CN">隐私计算：结合同态加密、扰动技术和区块链，构建面向基因组分析与生物医学数据共享的安全计算框架，在保护原始基因组信息的同时支持协作分析。</p>
+        <p data-lang-content="en">Building secure computational frameworks for genomic analysis and biomedical data sharing using homomorphic encryption, perturbation, and blockchain. The work enables collaborative analysis and data sharing without exposing raw genomic information.</p>
+        <p data-lang-content="zh">隐私计算：结合同态加密、扰动技术和区块链，构建面向基因组分析与生物医学数据共享的安全计算框架，在保护原始基因组信息的同时支持协作分析。</p>
       </div>
     </div>
   </div>
@@ -713,76 +764,139 @@
 <!-- Media Coverage -->
 <section id="media">
   <div class="sec-head">
-    <h2 class="sec-title">Media <em>Coverage</em></h2>
-    <div class="sec-aside">WeChat articles</div>
+    <h2 class="sec-title"><span data-lang-content="en">Media Coverage</span><span data-lang-content="zh">媒体报道</span></h2>
+    <div class="sec-aside"><span data-lang-content="en">WeChat articles</span><span data-lang-content="zh">微信推文</span></div>
   </div>
   <div class="media-grid">
     <a class="media-card" href="https://mp.weixin.qq.com/s/m-GpxhYgLNelfVDvhcjXaA" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">首个个体化新抗原疗法III期成功，空间蛋白组学助力免疫应答解析</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">The First Personalized Neoantigen Therapy Achieves Phase III Success, with Spatial Proteomics Supporting Immune-Response Analysis</div>
+      <div class="mc-headline" data-lang-content="zh">首个个体化新抗原疗法III期成功，空间蛋白组学助力免疫应答解析</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/KrlQzgg5QjpCVccV4SzWag" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">DeepTech</div>
-      <div class="mc-headline">DeepTech对话杨梦：AI for Bio的下一场竞争，是把实验闭环验证真正做出来</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">DeepTech</div>
+      <div class="mc-outlet" data-lang-content="zh">DeepTech</div>
+      <div class="mc-headline" data-lang-content="en">DeepTech in Conversation with Meng Yang: The Next Competition in AI for Bio Is to Make Closed-Loop Experimental Validation Work in the Real World</div>
+      <div class="mc-headline" data-lang-content="zh">DeepTech对话杨梦：AI for Bio的下一场竞争，是把实验闭环验证真正做出来</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/MyElvvrjs2XEkI2xsp6cWA" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">涌生智能携手鹭江创新实验室，共探海洋生物智造新范式</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">Genoria AI Partners with Lujiang Innovation Laboratory to Explore a New Paradigm for Marine Biomanufacturing</div>
+      <div class="mc-headline" data-lang-content="zh">涌生智能携手鹭江创新实验室，共探海洋生物智造新范式</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/yM7Ox2crrueZ3qQVecsaMQ" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">生命科学实验室的 Physical AI，长在实验室里，不在聊天框里</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">Physical AI in Life Science Laboratories Is Built in the Lab, Not in the Chat Window</div>
+      <div class="mc-headline" data-lang-content="zh">生命科学实验室的 Physical AI，长在实验室里，不在聊天框里</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/r5ZAZ7azBYOMI8b8JVwR6Q" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">自进化酶实验室应用案例</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">Application Case: A Self-Evolving Enzyme Laboratory</div>
+      <div class="mc-headline" data-lang-content="zh">自进化酶实验室应用案例</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/FftXd7mTOKS5hQAjbCwB5w" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">【AI智能体|自主酶进化实验室】SE-Fab，Self-Evolving Foundry</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">AI Agents | Autonomous Enzyme Evolution Laboratory: SE-Fab, the Self-Evolving Foundry</div>
+      <div class="mc-headline" data-lang-content="zh">【AI智能体|自主酶进化实验室】SE-Fab，Self-Evolving Foundry</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/ejG1IMzH4eP8OT0tJUapWg" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">【AI智能体|全自动血液处理】贯穿中心法则的血液前处理方案</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">AI Agents | Fully Automated Blood Processing: A Blood Pre-Processing Solution Spanning the Central Dogma</div>
+      <div class="mc-headline" data-lang-content="zh">【AI智能体|全自动血液处理】贯穿中心法则的血液前处理方案</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/2isU9VzsgtoHq99COPDr4Q" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">涌生智能丨 自进化实验室，解锁基因编辑育种新质生产力</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">Genoria AI | Self-Evolving Laboratories: Unlocking Next-Generation Productivity for Gene-Editing Breeding</div>
+      <div class="mc-headline" data-lang-content="zh">涌生智能丨 自进化实验室，解锁基因编辑育种新质生产力</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/q4KpJuyBdw2TgYU7jZiCJw" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">【AI智能体|植物基因编辑】植物编辑自进化实验室，重塑育种新范式</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">AI Agents | Plant Gene Editing: A Self-Evolving Laboratory Reshaping the Paradigm of Plant Breeding</div>
+      <div class="mc-headline" data-lang-content="zh">【AI智能体|植物基因编辑】植物编辑自进化实验室，重塑育种新范式</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/oPXQXEI88Z__malP8KFLWA" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">从 Protocol 到 Code：一个实验代码工位正在 7×24 积累自动化资产</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">From Protocol to Code: A Laboratory Coding Workstation Building Reusable Automation Assets 24/7</div>
+      <div class="mc-headline" data-lang-content="zh">从 Protocol 到 Code：一个实验代码工位正在 7×24 积累自动化资产</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
     <a class="media-card" href="https://mp.weixin.qq.com/s/qwpkDvVI3ETpTGyYdALRjg" target="_blank" rel="noopener noreferrer">
-      <div class="mc-outlet">涌生智能</div>
-      <div class="mc-headline">【AI智能体|色谱机器人专家】复杂组分纯化，开启自进化时代</div>
-      <div class="mc-date">微信公众号</div>
+      <div class="mc-outlet" data-lang-content="en">Genoria AI</div>
+      <div class="mc-outlet" data-lang-content="zh">涌生智能</div>
+      <div class="mc-headline" data-lang-content="en">AI Agents | Chromatography Robot Expert: Bringing Complex-Component Purification into the Self-Evolving Era</div>
+      <div class="mc-headline" data-lang-content="zh">【AI智能体|色谱机器人专家】复杂组分纯化，开启自进化时代</div>
+      <div class="mc-date" data-lang-content="en">WeChat</div>
+      <div class="mc-date" data-lang-content="zh">微信公众号</div>
     </a>
   </div>
 </section>
 
 <!-- Footer -->
 <footer>
-  <div><span class="foot-name">© 2026 Meng Yang · 杨梦</span> · All rights reserved</div>
+  <div data-lang-content="en"><span class="foot-name">© 2026 Meng Yang</span> · All rights reserved</div>
+  <div data-lang-content="zh"><span class="foot-name">© 2026 杨梦</span> · 版权所有</div>
 </footer>
 
 </div>
 
 <script>
+  const languageButtons = document.querySelectorAll('[data-set-language]');
+
+  function updatePublicationToggle(){
+    const language = document.documentElement.dataset.language;
+    const open = ext.classList.contains('open');
+    const state = open ? 'open' : 'closed';
+    tog.textContent = tog.dataset[`label${language === 'zh' ? 'Zh' : 'En'}${state === 'open' ? 'Open' : 'Closed'}`];
+  }
+
+  function setLanguage(language, persist = true){
+    if(language !== 'en' && language !== 'zh') return;
+    document.documentElement.dataset.language = language;
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+    document.title = language === 'zh' ? '杨梦' : 'Meng Yang';
+    languageButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.setLanguage === language));
+    });
+    if(persist){
+      try {
+        localStorage.setItem('ymblog-language', language);
+      } catch {}
+    }
+    updatePublicationToggle();
+  }
+
+  languageButtons.forEach((button) => {
+    button.addEventListener('click', () => setLanguage(button.dataset.setLanguage));
+  });
+
   // Toggle "Other Publications"
   const tog = document.getElementById('pubToggle');
   const ext = document.getElementById('pubExtra');
@@ -790,9 +904,10 @@
     const open = ext.classList.toggle('open');
     tog.classList.toggle('open', open);
     tog.setAttribute('aria-expanded', String(open));
-    tog.textContent = open ? 'Hide Other Publications' : 'Other Publications';
-    if(open){tog.classList.add('open')}
+    updatePublicationToggle();
   });
+
+  setLanguage(document.documentElement.dataset.language, false);
 
   // Reveal on scroll
   const obs = new IntersectionObserver((entries) => {
