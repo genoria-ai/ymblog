@@ -10,7 +10,7 @@ test('removes the duplicate floating quick navigation', () => {
 
 test('renders publication venues as plain muted text', () => {
   assert.doesNotMatch(html, /pub-venue-tag|class="vyr"|\bflagship\b|\bspecial\b/);
-  assert.equal((html.match(/class="pub-venue"/g) ?? []).length, 15);
+  assert.equal((html.match(/class="pub-venue"/g) ?? []).length, 17);
 
   const venueRule = html.match(/\.pub-venue\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(venueRule, /color:var\(--ink-faint\)/);
@@ -48,15 +48,27 @@ test('pairs translated interface and prose content in both languages', () => {
 });
 
 test('keeps publication titles in their original language', () => {
-  assert.equal((html.match(/<span class="ptitle">/g) ?? []).length, 15);
+  assert.equal((html.match(/<span class="ptitle">/g) ?? []).length, 17);
   assert.doesNotMatch(html, /class="ptitle"[^>]*data-lang-content/);
 
   const publicationMetaRows = html.match(/<div class="pmeta-row">[\s\S]*?<\/div>/g) ?? [];
-  assert.equal(publicationMetaRows.length, 15);
+  assert.equal(publicationMetaRows.length, 17);
   publicationMetaRows.forEach((row) => {
     assert.ok(/data-lang-content="en"/.test(row));
     assert.ok(/data-lang-content="zh"/.test(row));
   });
+});
+
+test('lists all three 2026 articles with corresponding-author metadata', () => {
+  const publications2026 = html.match(/<div class="pub-year">2026<\/div>([\s\S]*?)<\/div>\s*<\/div>\s*<div class="pub-year-group">/)?.[1] ?? '';
+
+  assert.equal((publications2026.match(/class="pub-item"/g) ?? []).length, 3);
+  assert.ok(publications2026.includes('<div class="pub-venue">arXiv</div>'));
+  assert.ok(publications2026.includes('A self-evolving agentic system for automated generation and execution of biological protocols'));
+  assert.ok(publications2026.includes('<div class="pub-venue">Genome Medicine</div>'));
+  assert.ok(publications2026.includes('Single-cell omics data-driven decoding of tumor clonal evolution through reinforcement learning'));
+  assert.equal((publications2026.match(/Corresponding author/g) ?? []).length, 3);
+  assert.equal((publications2026.match(/通讯作者/g) ?? []).length, 3);
 });
 
 test('switches identity and page title without mixing display languages', () => {
