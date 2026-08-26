@@ -65,3 +65,31 @@ test('switches identity and page title without mixing display languages', () => 
   assert.ok(/document\.title = language === 'zh' \? '杨梦' : 'Meng Yang'/.test(html));
   assert.doesNotMatch(html, /Meng Yang · 杨梦/);
 });
+
+test('uses the approved bilingual opening biography', () => {
+  const bio = html.match(/<div class="bio anim d4">([\s\S]*?)<\/div>/)?.[1] ?? '';
+
+  assert.equal((bio.match(/<p data-lang-content="en">/g) ?? []).length, 3);
+  assert.equal((bio.match(/<p data-lang-content="zh">/g) ?? []).length, 3);
+  assert.ok(bio.includes('a Visiting Researcher at the Shanghai Artificial Intelligence Laboratory'));
+  assert.ok(bio.includes('上海人工智能实验室客座研究员'));
+  assert.ok(bio.includes('<strong>Scale Agentic Discovery</strong>'));
+  assert.doesNotMatch(bio, /Chief AI Officer|华大智造首席AI官/);
+});
+
+test('labels the two requested publications as privacy-preserving computation', () => {
+  const humanGenetics = html.match(/<div class="pub-venue">Human Genetics<\/div>[\s\S]*?<div class="pmeta-row">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  const medicalInformatics = html.match(/<div class="pub-venue">International Journal of Medical Informatics<\/div>[\s\S]*?<div class="pmeta-row">([\s\S]*?)<\/div>/)?.[1] ?? '';
+
+  [humanGenetics, medicalInformatics].forEach((metadata) => {
+    assert.ok(metadata.includes('Privacy-Preserving Computation'));
+    assert.ok(metadata.includes('隐私计算'));
+    assert.doesNotMatch(metadata, /Blockchain|区块链/);
+  });
+});
+
+test('uses a minimal articles heading without a publication count', () => {
+  assert.match(html, /<a href="#publications"><span data-lang-content="en">Publications<\/span><span data-lang-content="zh">文章<\/span><\/a>/);
+  assert.match(html, /<span data-lang-content="en">Articles<\/span><span data-lang-content="zh">文章<\/span>/);
+  assert.doesNotMatch(html, /15 representative articles|15 篇代表性论文/);
+});
