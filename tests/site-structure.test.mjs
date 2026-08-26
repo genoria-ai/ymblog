@@ -105,3 +105,20 @@ test('uses a minimal articles heading without a publication count', () => {
   assert.match(html, /<span data-lang-content="en">Articles<\/span><span data-lang-content="zh">文章<\/span>/);
   assert.doesNotMatch(html, /15 representative articles|15 篇代表性论文/);
 });
+
+test('places the Chulalongkorn University adjunct professorship in the biography', () => {
+  const roleLine = html.match(/<div class="role-line anim d3">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  const bio = html.match(/<div class="bio anim d4">([\s\S]*?)<\/div>/)?.[1] ?? '';
+
+  assert.doesNotMatch(roleLine, /Adjunct professor of Chulalongkorn University|泰国朱拉隆功大学客座教授/);
+  assert.ok(bio.includes('a Visiting Researcher at the Shanghai Artificial Intelligence Laboratory, an Adjunct professor of Chulalongkorn University, and a Shenzhen Municipal High-Level Professional Talent'));
+  assert.ok(bio.includes('上海人工智能实验室客座研究员、泰国朱拉隆功大学客座教授、深圳市国内高层次人才'));
+});
+
+test('uses the contact email in the footer instead of copyright text', () => {
+  const footer = html.match(/<footer>([\s\S]*?)<\/footer>/)?.[1] ?? '';
+
+  assert.ok(footer.includes('href="mailto:yangmeng@genoria.ai"'));
+  assert.ok(footer.includes('>yangmeng@genoria.ai<'));
+  assert.doesNotMatch(footer, /All rights reserved|版权所有|©/);
+});
