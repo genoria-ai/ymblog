@@ -40,7 +40,9 @@ test('pairs translated interface and prose content in both languages', () => {
   });
 
   const mediaCards = html.match(/<a class="media-card"[\s\S]*?<\/a>/g) ?? [];
-  assert.equal(mediaCards.length, 11);
+  assert.equal(mediaCards.length, 10);
+  assert.doesNotMatch(html, /The First Personalized Neoantigen Therapy Achieves Phase III Success/);
+  assert.doesNotMatch(html, /首个个体化新抗原疗法III期成功/);
   mediaCards.forEach((card) => {
     assert.ok(/class="mc-headline" data-lang-content="en"/.test(card));
     assert.ok(/class="mc-headline" data-lang-content="zh"/.test(card));
