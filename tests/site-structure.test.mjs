@@ -50,7 +50,7 @@ test('pairs translated interface and prose content in both languages', () => {
 });
 
 test('keeps publication titles in their original language', () => {
-  assert.equal((html.match(/<span class="ptitle">/g) ?? []).length, 17);
+  assert.equal((html.match(/<(?:span|a) class="ptitle"/g) ?? []).length, 17);
   assert.doesNotMatch(html, /class="ptitle"[^>]*data-lang-content/);
 
   const publicationMetaRows = html.match(/<div class="pmeta-row">[\s\S]*?<\/div>/g) ?? [];
@@ -106,6 +106,36 @@ test('uses a minimal articles heading without a publication count', () => {
   assert.match(html, /<a href="#publications"><span data-lang-content="en">Publications<\/span><span data-lang-content="zh">文章<\/span><\/a>/);
   assert.match(html, /<span data-lang-content="en">Articles<\/span><span data-lang-content="zh">文章<\/span>/);
   assert.doesNotMatch(html, /15 representative articles|15 篇代表性论文/);
+});
+
+test('links every publication title to its official source', () => {
+  const expectedUrls = [
+    'https://arxiv.org/abs/2606.31763',
+    'https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-026-01648-4',
+    'https://academic.oup.com/nar/article/54/3/gkaf1529/8443086',
+    'https://www.nature.com/articles/s41551-025-01455-z',
+    'https://doi.org/10.1016/j.labinv.2025.104252',
+    'https://www.nature.com/articles/s42256-022-00518-z',
+    'https://academic.oup.com/gigascience/article/doi/10.1093/gigascience/giaf053/8290990',
+    'https://doi.org/10.1021/acscatal.5c01571',
+    'https://doi.org/10.1007/s00439-025-02764-8',
+    'https://www.biorxiv.org/content/10.64898/2025.12.22.696117v1',
+    'https://www.biorxiv.org/content/10.64898/2025.12.17.694846v1',
+    'https://doi.org/10.1016/j.isci.2024.109635',
+    'https://www.nature.com/articles/s42256-023-00691-9',
+    'https://doi.org/10.1016/j.patter.2022.100651',
+    'https://doi.org/10.1016/j.cels.2022.08.001',
+    'https://doi.org/10.1093/nar/gkac326',
+    'https://doi.org/10.1016/j.ijmedinf.2021.104559',
+  ];
+  const titleLinks = [...html.matchAll(/<a class="ptitle"[^>]*href="([^"]+)"[^>]*>[\s\S]*?<\/a>/g)];
+
+  assert.equal(titleLinks.length, expectedUrls.length);
+  assert.deepEqual(titleLinks.map((match) => match[1]), expectedUrls);
+  titleLinks.forEach((match) => {
+    assert.match(match[0], /target="_blank"/);
+    assert.match(match[0], /rel="noopener noreferrer"/);
+  });
 });
 
 test('places the Chulalongkorn University adjunct professorship in the biography', () => {
